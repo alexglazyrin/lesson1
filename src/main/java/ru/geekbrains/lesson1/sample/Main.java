@@ -39,9 +39,6 @@ import java.util.List;
 
  >> docker buildx build --output type=local,dest=. .
 
-
-
-
  FROM bellsoft/liberica-openjdk-alpine:11.0.16
  WORKDIR /app
  COPY ./bin .
