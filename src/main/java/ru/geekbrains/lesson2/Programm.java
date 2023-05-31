@@ -19,38 +19,39 @@ public class Programm {
     /*
     Инициализация игрового поля
      */
-    private static void initialize(){
+    private static void initialize() {
         fieldSizeX = 3;
         fieldSizeY = 3;
 
         field = new char[fieldSizeX][fieldSizeY];
-        for (int x = 0; x < fieldSizeX; x++){
-            for (int y = 0; y < fieldSizeY; y++){
+        for (int x = 0; x < fieldSizeX; x++) {
+            for (int y = 0; y < fieldSizeY; y++) {
                 field[x][y] = DOT_EMPTY;
             }
         }
     }
+
     /*
     Отрисовка игрового поля
     TODO: Поправить отрисовку игрового поля
      */
-    private static void printField(){
+    private static void printField() {
         System.out.print("+");
-        for (int i = 0; i < fieldSizeX * 2 + 1; i++){
+        for (int i = 0; i < fieldSizeX * 2 + 1; i++) {
             System.out.print((i % 2 == 0) ? "-" : i / 2 + 1);
         }
         System.out.println();
 
-        for (int i = 0; i < fieldSizeX; i++){
+        for (int i = 0; i < fieldSizeX; i++) {
             System.out.print(i + 1 + "|");
 
-            for (int j = 0; j < fieldSizeY; j++){
+            for (int j = 0; j < fieldSizeY; j++) {
                 System.out.print(field[i][j] + "|");
             }
             System.out.println();
         }
 
-        for (int i = 0; i < fieldSizeX * 2 + 2; i++){
+        for (int i = 0; i < fieldSizeX * 2 + 2; i++) {
             System.out.print("-");
         }
         System.out.println();
@@ -59,50 +60,98 @@ public class Programm {
     /*Обработка хода игрока (человека)
 
      */
-    private static void humanTurn(){
+    private static void humanTurn() {
         int x, y;
-        do{
+        do {
             System.out.println("Введите координаты хода X и Y (от 1 до  3) через пробел");
             x = scan.nextInt() - 1;
             y = scan.nextInt() - 1;
         }
-        while (!isCellValid(x,y) || !isCellEmpty(x,y));
+        while (!isCellValid(x, y) || !isCellEmpty(x, y));
         field[x][y] = DOT_HUMAN;
 
     }
+
     /*
     Проверка, ячека является пустой
      */
-    static boolean isCellEmpty(int x, int y){
+    static boolean isCellEmpty(int x, int y) {
         return field[x][y] == DOT_EMPTY;
     }
 
-    static boolean isCellValid(int x, int y){
+    static boolean isCellValid(int x, int y) {
         return x >= 0 && x < fieldSizeX && y >= 0 && y < fieldSizeY;
     }
 
-    private static void aiTurn(){
+    private static void aiTurn() {
         int x, y;
-        do{
+        do {
             x = rand.nextInt(fieldSizeX);
             y = rand.nextInt(fieldSizeY);
-        }while (!isCellEmpty(x,y));
+        } while (!isCellEmpty(x, y));
         field[x][y] = DOT_AI;
+    }
+
+    /*
+    Проверка победы
+    TODO: Переработать метод в дз
+     */
+    static boolean checkWin(char c) {
+        if (field[0][0] == c && field[0][1] == c && field[0][2] == c) return true;
+        if (field[1][0] == c && field[1][1] == c && field[1][2] == c) return true;
+        if (field[2][0] == c && field[2][1] == c && field[2][2] == c) return true;
+
+        if (field[0][0] == c && field[1][0] == c && field[2][0] == c) return true;
+        if (field[0][1] == c && field[1][1] == c && field[2][1] == c) return true;
+        if (field[0][2] == c && field[1][2] == c && field[2][2] == c) return true;
+
+        if (field[0][0] == c && field[1][1] == c && field[2][2] == c) return true;
+        if (field[0][2] == c && field[1][1] == c && field[2][0] == c) return true;
+
+        return false;
+    }
+
+    static boolean checkDraw() {
+        for (int x = 0; x < fieldSizeX; x++) {
+            for (int y = 0; y < fieldSizeY; y++)
+                if (isCellEmpty(x, y)) return false;
+        }
+        return true;
+    }
+    /*
+    Метод проверки состояния игры
+     */
+
+    static boolean gameCheck(char c, String str) {
+        if (checkWin(c)) {
+            System.out.println(str);
+            return true;
+        }
+        if (checkDraw()) {
+            System.out.println("Ничья!");
+            return true;
+        }
+        return false; //Игра продолжается
     }
 
 
     public static void main(String[] args) {
+        while (true) {
             initialize();
             printField();
-            while (true){
+            while (true) {
                 humanTurn();
                 printField();
-                //TODO: Проверка на победу
+                if (gameCheck(DOT_HUMAN, "Вы подбедили!"))
+                    break;
                 aiTurn();
                 printField();
-                //TODO: Проверка на победу
+                if (gameCheck(DOT_AI, "Компьютер подбедил!"))
+                    break;
             }
-
+            System.out.println("Еще разок?");
+            if(!scan.next().equalsIgnoreCase("Y"))
+                break;
+        }
     }
-
 }
