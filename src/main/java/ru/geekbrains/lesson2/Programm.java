@@ -112,6 +112,7 @@ public class Programm {
         return false;
 
          */
+        /*int count = 0;
         boolean winDiagR = true;
         boolean winDiagL = true;
         boolean winH = true;
@@ -134,11 +135,30 @@ public class Programm {
             }
             if (winV) break;
         }
-        if (winDiagR) return true;
-        if (winDiagL) return true;
-        if (winH) return true;
-        if (winV) return true;
+        if (winDiagR || winDiagL || winH ||winV) return true;
+        return false;*/
+
+        for (int i = 0; i < WIN_COUNT; i++)
+        {
+            // проверяем строки
+            if (checkL(i, 0, 0, 1, c)) return true;
+            // проверяем столбцы
+            if (checkL(0, i, 1, 0, c)) return true;
+        }
+        // проверяем диагонали
+        if (checkL(0, 0, 1, 1, c)) return true;
+        if (checkL(0, WIN_COUNT - 1, 1, -1, c)) return true;
         return false;
+    }
+
+    public static boolean checkL(int start_x, int start_y, int dx, int dy, char c)
+    {
+        for (int i = 0; i < WIN_COUNT; i++)
+        {
+            if (field[start_x + i * dx][start_y + i * dy] != c)
+                return false;
+        }
+        return true;
     }
 
 
