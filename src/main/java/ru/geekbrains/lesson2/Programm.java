@@ -4,12 +4,12 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Programm {
-
+    private static final int WIN_COUNT = 4;
     private static final char DOT_HUMAN = 'X';
     private static final char DOT_AI = '0';
     private static final char DOT_EMPTY = '·';
-    private static int fieldSizeX;
-    private static int fieldSizeY;
+    private static int fieldSize;
+    //private static int fieldSizeY;
 
     private static final Scanner scan = new Scanner(System.in);
     private static final Random rand = new Random();
@@ -20,12 +20,12 @@ public class Programm {
     Инициализация игрового поля
      */
     private static void initialize() {
-        fieldSizeX = 3;
-        fieldSizeY = 3;
+        fieldSize = 5;
+        //fieldSizeY = 5;
 
-        field = new char[fieldSizeX][fieldSizeY];
-        for (int x = 0; x < fieldSizeX; x++) {
-            for (int y = 0; y < fieldSizeY; y++) {
+        field = new char[fieldSize][fieldSize];
+        for (int x = 0; x < fieldSize; x++) {
+            for (int y = 0; y < fieldSize; y++) {
                 field[x][y] = DOT_EMPTY;
             }
         }
@@ -37,21 +37,21 @@ public class Programm {
      */
     private static void printField() {
         System.out.print("+");
-        for (int i = 0; i < fieldSizeX * 2 + 1; i++) {
+        for (int i = 0; i < fieldSize * 2 + 1; i++) {
             System.out.print((i % 2 == 0) ? "-" : i / 2 + 1);
         }
         System.out.println();
 
-        for (int i = 0; i < fieldSizeX; i++) {
+        for (int i = 0; i < fieldSize; i++) {
             System.out.print(i + 1 + "|");
 
-            for (int j = 0; j < fieldSizeY; j++) {
+            for (int j = 0; j < fieldSize; j++) {
                 System.out.print(field[i][j] + "|");
             }
             System.out.println();
         }
 
-        for (int i = 0; i < fieldSizeX * 2 + 2; i++) {
+        for (int i = 0; i < fieldSize * 2 + 2; i++) {
             System.out.print("-");
         }
         System.out.println();
@@ -80,14 +80,14 @@ public class Programm {
     }
 
     static boolean isCellValid(int x, int y) {
-        return x >= 0 && x < fieldSizeX && y >= 0 && y < fieldSizeY;
+        return x >= 0 && x < fieldSize && y >= 0 && y < fieldSize;
     }
 
     private static void aiTurn() {
         int x, y;
         do {
-            x = rand.nextInt(fieldSizeX);
-            y = rand.nextInt(fieldSizeY);
+            x = rand.nextInt(fieldSize);
+            y = rand.nextInt(fieldSize);
         } while (!isCellEmpty(x, y));
         field[x][y] = DOT_AI;
     }
@@ -97,6 +97,7 @@ public class Programm {
     TODO: Переработать метод в дз
      */
     static boolean checkWin(char c) {
+        /*
         if (field[0][0] == c && field[0][1] == c && field[0][2] == c) return true;
         if (field[1][0] == c && field[1][1] == c && field[1][2] == c) return true;
         if (field[2][0] == c && field[2][1] == c && field[2][2] == c) return true;
@@ -109,11 +110,18 @@ public class Programm {
         if (field[0][2] == c && field[1][1] == c && field[2][0] == c) return true;
 
         return false;
+
+         */
+        int countWin = 0;
+
+
+        return false;
     }
 
+
     static boolean checkDraw() {
-        for (int x = 0; x < fieldSizeX; x++) {
-            for (int y = 0; y < fieldSizeY; y++)
+        for (int x = 0; x < fieldSize; x++) {
+            for (int y = 0; y < fieldSize; y++)
                 if (isCellEmpty(x, y)) return false;
         }
         return true;
@@ -150,7 +158,7 @@ public class Programm {
                     break;
             }
             System.out.println("Еще разок?");
-            if(!scan.next().equalsIgnoreCase("Y"))
+            if (!scan.next().equalsIgnoreCase("Y"))
                 break;
         }
     }
