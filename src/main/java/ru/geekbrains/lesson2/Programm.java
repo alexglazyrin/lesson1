@@ -112,9 +112,32 @@ public class Programm {
         return false;
 
          */
-        int countWin = 0;
-
-
+        boolean winDiagR = true;
+        boolean winDiagL = true;
+        boolean winH = true;
+        boolean winV = true;
+        for (int i = 0; i < fieldSize; i++) {
+            winDiagR = winDiagR & (field[i][i] == c);
+        }
+        for (int i = 0; i < fieldSize; i++) {
+            winDiagL = winDiagL & (field[i][fieldSize - i - 1] == c);
+        }
+        for (int i = 0; i < fieldSize; i++) {
+            for (int j = 0; j<fieldSize; j++){
+                winH = winH & (field[i][j] == c);
+            }
+            if (winH) break;
+        }
+        for (int i = 0; i < fieldSize; i++) {
+            for (int j = 0; j<fieldSize; j++){
+                winV = winV & (field[j][i] == c);
+            }
+            if (winV) break;
+        }
+        if (winDiagR) return true;
+        if (winDiagL) return true;
+        if (winH) return true;
+        if (winV) return true;
         return false;
     }
 
