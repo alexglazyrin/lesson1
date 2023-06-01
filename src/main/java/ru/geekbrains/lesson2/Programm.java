@@ -7,7 +7,7 @@ public class Programm {
     private static final int WIN_COUNT = 4;
     private static final char DOT_HUMAN = 'X';
     private static final char DOT_AI = '0';
-    private static final char DOT_EMPTY = '·';
+    private static final char DOT_EMPTY = '*';
     private static int fieldSize;
     //private static int fieldSizeY;
 
@@ -138,14 +138,12 @@ public class Programm {
         if (winDiagR || winDiagL || winH ||winV) return true;
         return false;*/
 
-        for (int i = 0; i < WIN_COUNT; i++)
+        for (int i = 0; i < fieldSize; i++)
         {
-            // проверяем строки
-            if (checkL(i, 0, 0, 1, c)) return true;
-            // проверяем столбцы
-            if (checkL(0, i, 1, 0, c)) return true;
+            if (checkL(i, 0, 0, 1, c)) return true; //строки
+            if (checkL(0, i, 1, 0, c)) return true; //столбцы
         }
-        // проверяем диагонали
+        // диагонали
         if (checkL(0, 0, 1, 1, c)) return true;
         if (checkL(0, WIN_COUNT - 1, 1, -1, c)) return true;
         return false;
