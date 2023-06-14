@@ -18,26 +18,26 @@ public class Human {
     private final int maxRun;
     private final int maxJump;
 
-    public Human(){
+    /*public Human(){
         this("noname");
-        /*this.name = "noname";
+        *//*this.name = "noname";
         this.maxRun = 1000;
-        this.maxJump = 100;*/
-    }
+        this.maxJump = 100;*//*
+    }*/
 
-    public Human(String name){
+    /*public Human(String name){
         this(name, 1000);
-        /*this.name = name;
+        *//*this.name = name;
         this.maxRun = 1000;
-        this.maxJump = 100;*/
-    }
+        this.maxJump = 100;*//*
+    }*/
 
-    public Human(int maxRun, int maxJump){
+    /*public Human(int maxRun, int maxJump){
         this(name,maxRun,100);
-        /*this.name = "noname";
+        *//*this.name = "noname";
         this.maxRun = maxRun;
-        this.maxJump = maxJump;*/
-    }
+        this.maxJump = maxJump;*//*
+    }*/
 
     public Human(String name, int maxRun, int maxJump){
         if(name == null || name.length() < 3){
