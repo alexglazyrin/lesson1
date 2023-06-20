@@ -1,6 +1,9 @@
 package ru.geekbrains.sem5;
 
 import java.io.*;
+import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Main {
@@ -23,7 +26,19 @@ public class Main {
 
         Tree.print(new File("."), "", true);
 
+        String[] fileNames = new String[10];
 
+        backup(".");
+        for (int i = 0; i < fileNames.length; i++){
+            fileNames[i] = "file_" + i + ".txt";
+            writeFileContents(fileNames[i], 100, 4);
+            System.out.printf("Файл %s создан.\n", fileNames[i]);
+        }
+
+        List<String> result = searchMatch(fileNames, TO_SEARCH);
+        for (String s: result) {
+            System.out.printf("Файл %s содержит искомое слово '%s'\n", s, TO_SEARCH);
+        }
     }
 
     private static String generateSymbols(int amount){
@@ -108,6 +123,7 @@ public class Main {
                     i = 0;
                     if (c == searchData[i]){
                         i++;
+                        continue;
                     }
                 }
                 if(i == searchData.length){
@@ -118,5 +134,45 @@ public class Main {
         }
     }
 
+    private static List<String> searchMatch(String[] files, String search) throws IOException {
+        List<String> list = new ArrayList<>();
+        File path = new File(new File(".").getCanonicalPath());
+        File[] dir = path.listFiles();
+        for (int i = 0; i < dir.length; i++){
+            if (dir[i].isDirectory())
+                continue;
+            for (int j = 0; j < files.length; j++){
+                if (dir[i].getName().equals(files[j])){
+                    if (searchInFile(dir[i].getName(), search)){
+                        list.add(dir[i].getName());
+                        break;
+                    }
+                }
+            }
+        }
+        return list;
+    }
 
+
+    /**
+     * ДОМАШНЕЕ ЗАДАНИЕ (УРОК 5)
+     */
+
+    /**
+     * Написать функцию, создающую резервную копию всех файлов в директории(без поддиректорий) во вновь созданную папку ./backup
+     * @param originalDir - источник (директория для бэкапа)
+     * @throws IOException
+     */
+    public static void backup(String originalDir) throws IOException{
+        File dir = new File("./backup");
+        if(!dir.exists())
+            dir.mkdir();
+
+        File backupingDir = new File(originalDir);
+        File[] backupingFiles = backupingDir.listFiles();
+
+        for (File file : backupingFiles) {
+        Files.copy(file.toPath(), new File(dir.getPath() + "/" + file.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
 }
